@@ -115,6 +115,14 @@ const users = {
     }
   ]
 */
+
+
+//.find() -> it returns the first item (element) that matches a given condition, even if more than one item matches. If there is no match, find() returns undefined.
+// The includes() method determines whether an array includes a certain value among its entries, returning true or false as appropriate.Syntax
+// includes(searchElement)
+// includes(searchElement, fromIndex)
+
+
 function getWishlistParksForUser(parks, users, username) {
   return parks.filter((park) => users[username].wishlist.includes(park.id))}
 
@@ -124,8 +132,7 @@ This function returns a boolean that represents whether or not a user has visite
   */
 
 function userHasVisitedAllParksInState(parks, users, state, username) {
-  return getParksByState(parks, state).every((park) => users[username].visited.includes(park.id));
-  
+  return getParksByState(parks, state).every((park) => users[username].visited.includes(park.id)); 
 }
 /* 
 userHasVisitedParkOnWishlist
@@ -151,6 +158,9 @@ const users = {
     }
   };
 */
+
+//.some() -> The some() method accepts a callback function that implements a comparison that is executed for each item in the array, similar to the previous methods. If the callback function returns true for any item in the array, then the entire some() method returns true. -> return true or false
+
 function userHasVisitedParkOnWishlist(users, username1, username2) {
   const user1 = users[username1].visited;
   const user2 = users[username2].wishlist;
@@ -159,12 +169,34 @@ function userHasVisitedParkOnWishlist(users, username1, username2) {
 
 /* 
 getUsersForUserWishlist
-This function returns all the usernames who have visited any park on the given user's wish list, return true if they have otherwise, return false.
+This function returns all the usernames who have visited any park on the given user's wish list.
+
+getUsersForUserWishlist(users, "karah.branch3"); //> ["dwayne.m55"]
+getUsersForUserWishlist(users, "dwayne.m55"); //> []
 */
-
-function getUsersForUserWishlist(users, username1, username2) {
+//.map() -> this code processes each item in the array and creates a new value for each item in the original array. Each item in the original array maps to an item in the new array.-> returns an array
+/* for...of
+The for...of statement executes a loop that operates on a sequence of values sourced from an iterable object. Iterable objects include instances of built-ins such as Array, String, TypedArray, Map, Set, NodeList (and other DOM collections), as well as the arguments object, generators produced by generator functions, and user-defined iterables. */
+function getUsersForUserWishlist(users, username) {
+  let usersForUserWishlist = [];//declaring variable for an empty array I can push my results into
+  let userWishlist = users[username].wishlist;//object shorthand for userWishlist variable that represents an array of usernames that have that wishlist assigned to them. 
+  for (const username in users) {//loop through the array of user
+    if (userWishlist.some((id) => users[username].visited.includes(id))) {
+     usersForUserWishlist.push(username);//push those results into the array usersForUserWishlist. 
+    }
+  } return usersForUserWishlist;
 }
+//or I could do something like this 
+// function getUsersForUserWishlist(users, username) {
+//   let userWishlist = users[username].wishlist;
+//   let result = [];
 
+//   for (const n in users) {
+//     let u = users[n].visited;
+//     if (u.some(item => userWishlist.includes(item))) result.push(n);
+//   }
+//   return result;
+// }
 
 module.exports = {
   getParksByState,
